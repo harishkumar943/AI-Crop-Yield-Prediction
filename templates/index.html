@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Crop Yield Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AI-Based Crop Yield Prediction System</h1>
+            <p>Predict crop yield using machine learning based on
+                agricultural and environmental factors.
+            </p>
+        </div>
+        <div class="card">
+            <div class="prediction-actions">
+                <a href="/history" class="history-btn">
+                    Prediction History
+                </a>
+
+                <a href="/dashboard" class="dashboard-btn">
+                    Dashboard
+                </a>
+
+            </div>
+
+            <h2>Crop Yield Prediction</h2>
+
+            <form method="POST">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>Year</label>
+                        <input type="number" name="year" value="2026" min="2000" max="2026" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>State</label>
+                        <input type="text" name="state" list="state-list" placeholder="Start typing state..." autocomplete="off" required>
+                        <datalist id="state-list">
+                            <option value="Andhra Pradesh">
+                            <option value="Arunachal Pradesh">
+                            <option value="Assam">
+                            <option value="Bihar">
+                            <option value="Chhattisgarh">
+                            <option value="Delhi">
+                            <option value="Goa">
+                            <option value="Gujarat">
+                            <option value="Haryana">
+                            <option value="Himachal Pradesh">
+                            <option value="Jammu and Kashmir">
+                            <option value="Jharkhand">
+                            <option value="Karnataka">
+                            <option value="Kerala">
+                            <option value="Madhya Pradesh">
+                            <option value="Maharashtra">
+                            <option value="Manipur">
+                            <option value="Meghalaya">
+                            <option value="Mizoram">
+                            <option value="Nagaland">
+                            <option value="Odisha">
+                            <option value="Puducherry">
+                            <option value="Punjab">
+                            <option value="Rajasthan">
+                            <option value="Sikkim">
+                            <option value="Tamil Nadu">
+                            <option value="Telangana">
+                            <option value="Tripura">
+                            <option value="Uttar Pradesh">
+                            <option value="Uttarakhand">
+                            <option value="West Bengal">
+                        </datalist>
+                    </div>
+
+                    <div class="form-group">
+    <label>Crop</label>
+
+    <input
+        type="text"
+        name="crop"
+        list="crop-list"
+        placeholder="Start typing crop..."
+        autocomplete="off"
+        required
+    >
+
+    <datalist id="crop-list">
+        <option value="Arecanut">
+        <option value="Arhar/Tur">
+        <option value="Bajra">
+        <option value="Banana">
+        <option value="Barley">
+        <option value="Black pepper">
+        <option value="Cardamom">
+        <option value="Cashewnut">
+        <option value="Coconut">
+        <option value="Cotton">
+        <option value="Cowpea">
+        <option value="Dry chillies">
+        <option value="Garlic">
+        <option value="Ginger">
+        <option value="Gram">
+        <option value="Groundnut">
+        <option value="Jowar">
+        <option value="Jute">
+        <option value="Linseed">
+        <option value="Maize">
+        <option value="Masoor">
+        <option value="Mesta">
+        <option value="Moong">
+        <option value="Moth">
+        <option value="Niger seed">
+        <option value="Oilseeds">
+        <option value="Onion">
+        <option value="Other Rabi pulses">
+        <option value="Other Summer Pulses">
+        <option value="Peas &amp; beans">
+        <option value="Potato">
+        <option value="Ragi">
+        <option value="Rapeseed &amp;Mustard">
+        <option value="Rice">
+        <option value="Safflower">
+        <option value="Sannhamp">
+        <option value="Sesamum">
+        <option value="Small millets">
+        <option value="Soyabean">
+        <option value="Sugarcane">
+        <option value="Sunflower">
+        <option value="Sweet potato">
+        <option value="Tapioca">
+        <option value="Tobacco">
+        <option value="Tomato">
+        <option value="Turmeric">
+        <option value="Urad">
+        <option value="Wheat">
+    </datalist>
+</div>
+
+                    <div class="form-group">
+                        <label>Season</label>
+                        <select name="season" required>
+                            <option value="">Select Season</option>
+                            <option value="Kharif">Kharif</option>
+                            <option value="Rabi">Rabi</option>
+                            <option value="Whole Year">Whole Year</option>
+                            <option value="Autumn">Autumn</option>
+                            <option value="Summer">Summer</option>
+                            <option value="Winter">Winter</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Area</label>
+                        <input type="number" name="area" step="any" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Annual Rainfall</label>
+                        <input type="number" name="rainfall" step="any" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Fertilizer</label>
+                        <input type="number" name="fertilizer" step="any" min="0" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Pesticide</label>
+                        <input type="number" name="pesticide" step="any" min="0" required>
+                    </div>
+
+                </div>
+
+                <button type="submit" class="predict-btn">
+                    Predict Yield
+                </button>
+
+                {% if prediction is not none %}
+    <div class="prediction-result">
+
+        <h2>Prediction Result</h2>
+
+        <div class="result-details">
+
+            <div class="result-item">
+                <span>Year</span>
+                <strong>{{ request.form["year"] }}</strong>
+            </div>
+
+            <div class="result-item">
+                <span>State</span>
+                <strong>{{ request.form["state"] }}</strong>
+            </div>
+
+            <div class="result-item">
+                <span>Crop</span>
+                <strong>{{ request.form["crop"] }}</strong>
+            </div>
+
+            <div class="result-item">
+                <span>Season</span>
+                <strong>{{ request.form["season"] }}</strong>
+            </div>
+
+        </div>
+
+        <div class="yield-value">
+            <span>Predicted Crop Yield</span>
+
+            <strong>
+                {{ "%.2f"|format(prediction) }}
+            </strong>
+        </div>
+
+    </div>
+{% endif %}
+
+{% if error %}
+    <div class="error-result">
+        <h2>Prediction Error</h2>
+
+        <p>{{ error }}</p>
+    </div>
+{% endif %}
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

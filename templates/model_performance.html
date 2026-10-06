@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Performance</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Model Performance</h1>
+        <p>
+            Comparison of machine learning models used for
+            crop yield prediction.
+        </p>
+    </div>
+
+    <div class="card">
+        <div class="dashboard-actions">
+            <a href="/" class="back-btn">
+                ← New Prediction
+            </a>
+            <a href="/dashboard" class="history-btn">
+                Dashboard
+            </a>
+            <a href="/history" class="history-btn">
+                Prediction History
+            </a>
+        </div>
+        <div class="performance-info">
+            <h2>Evaluation Metrics</h2>
+            <p>
+                The models were evaluated using a time-based
+                train-test split. The evaluation period contains
+                data from 2024 to 2026.
+            </p>
+        </div>
+
+        {% if metrics %}
+
+        <div class="analytics-table-container">
+            <table class="analytics-table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>MAE</th>
+                        <th>RMSE</th>
+                        <th>R² Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for model in metrics %}
+
+                    <tr>
+                        <td>
+                            <strong>{{ model["Model"] }}</strong>
+                        </td>
+                        <td>
+                            {{ "%.3f"|format(model["MAE"]) }}
+                        </td>
+                        <td>
+                            {{ "%.3f"|format(model["RMSE"]) }}
+                        </td>
+                        <td>
+                            {{ "%.3f"|format(model["R2"]) }}
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+
+        <div class="empty-history">
+            <h2>No Model Metrics</h2>
+            <p>
+                Model evaluation metrics are not available.
+            </p>
+        </div>
+        {% endif %}
+
+        <div class="evaluation-graph">
+
+    <h2>Actual vs Predicted Yield</h2>
+
+    <p>
+        The graph compares the actual crop yield values
+        with the values predicted by the Random Forest model.
+    </p>
+
+    <img
+        src="{{ url_for('static', filename='actual_vs_predicted_yield.png') }}"
+        alt="Actual vs Predicted Crop Yield"
+        class="evaluation-image"
+    >
+
+</div>
+     <div class="evaluation-graph">
+
+    <h2>Model Comparison - R² Score</h2>
+
+    <p>
+        The graph compares the R² scores of the three
+        machine learning models used in the project.
+    </p>
+
+    <img
+        src="{{ url_for('static', filename='model_comparison_r2.png') }}"
+        alt="Model Comparison R2 Score"
+        class="evaluation-image"
+    >
+
+</div>
+
+        <div class="performance-note">
+            <h2>Metric Explanation</h2>
+            <p>
+                <strong>MAE:</strong>
+                Mean Absolute Error measures the average
+                absolute difference between actual and predicted values.
+            </p>
+            <p>
+                <strong>RMSE:</strong>
+                Root Mean Squared Error gives more weight to
+                larger prediction errors.
+            </p>
+            <p>
+                <strong>R² Score:</strong>
+                R² indicates how well the model explains the
+                variation in the target values.
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

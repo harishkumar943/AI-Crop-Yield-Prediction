@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediction History</title>
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>Prediction History</h1>
+        <p>View previously generated crop yield predictions.</p>
+    </div>
+    <div class="card">
+        <div class="history-actions">
+    <a href="/" class="back-btn">← New Prediction</a>
+</div>
+
+<form method="GET" action="/history" class="filter-form">
+
+    <div class="filter-group">
+
+        <label for="search">
+            Search State or Crop
+        </label>
+
+        <input
+            type="text"
+            id="search"
+            name="search"
+            value="{{ search_text }}"
+            placeholder="e.g. Wheat or Uttar Pradesh"
+        >
+
+    </div>
+
+    <div class="filter-group">
+
+        <label for="season">
+            Season
+        </label>
+
+        <select id="season" name="season">
+
+            <option value="">All Seasons</option>
+
+            <option value="Kharif"
+                {% if selected_season == "Kharif" %}selected{% endif %}>
+                Kharif
+            </option>
+
+            <option value="Rabi"
+                {% if selected_season == "Rabi" %}selected{% endif %}>
+                Rabi
+            </option>
+
+            <option value="Whole Year"
+                {% if selected_season == "Whole Year" %}selected{% endif %}>
+                Whole Year
+            </option>
+
+            <option value="Autumn"
+                {% if selected_season == "Autumn" %}selected{% endif %}>
+                Autumn
+            </option>
+
+            <option value="Summer"
+                {% if selected_season == "Summer" %}selected{% endif %}>
+                Summer
+            </option>
+
+            <option value="Winter"
+                {% if selected_season == "Winter" %}selected{% endif %}>
+                Winter
+            </option>
+
+        </select>
+
+    </div>
+
+    <div class="filter-buttons">
+
+        <button type="submit" class="filter-btn">
+            Search
+        </button>
+
+        <a href="/history" class="clear-filter-btn">
+            Clear
+        </a>
+
+    </div>
+
+</form>
+
+{% if predictions %}
+
+        <div class="history-table-container">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Year</th>
+                        <th>State</th>
+                        <th>Crop</th>
+                        <th>Season</th>
+                        <th>Area</th>
+                        <th>Rainfall</th>
+                        <th>Predicted Yield</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for prediction in predictions %}
+
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ prediction[1] }}</td>
+                        <td>{{ prediction[2] }}</td>
+                        <td>{{ prediction[3] }}</td>
+                        <td>{{ prediction[4] }}</td>
+                        <td>{{ prediction[5] }}</td>
+                        <td>{{ prediction[6] }}</td>
+                        <td>
+                            <strong>
+                                {{ "%.2f"|format(prediction[9]) }}
+                            </strong>
+                        </td>
+                        <td>
+                            <form
+                                action="{{ url_for('delete_prediction_route', prediction_id=prediction[0]) }}"
+                                method="POST"
+                                onsubmit="return confirm('Are you sure you want to delete this prediction?');"
+                            >
+                                <button type="submit" class="delete-btn">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="empty-history">
+            <h2>No Predictions Yet</h2>
+            <p>Generate a prediction first to see it here.</p>
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
