@@ -7,3 +7,11 @@ env/
 crop_predictions.db
 random_forest_test_predictions.csv
 crop_yield_model.pkl
+
+# Generated graph images
+actual_vs_predicted_yield.png
+model_comparison_r2.png
+
+# OS files
+.DS_Store
+Thumbs.db
