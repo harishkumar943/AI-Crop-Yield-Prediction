@@ -16,7 +16,7 @@ from database import (
 app = Flask(__name__)
 
 # Load final trained ML model
-model = joblib.load("crop_yield_model.pkl")
+model = joblib.load("crop_yield_model_compressed.pkl")
 
 # Create database and predictions table
 create_database()
